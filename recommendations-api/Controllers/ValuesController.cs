@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Gremlin.Net;
+using Gremlin.Net.Driver;
+using Newtonsoft.Json;
+using Gremlin.Net.Structure.IO.GraphSON;
 
 namespace recommendations_api.Controllers
 {
