@@ -32,11 +32,11 @@ namespace recommendations_api
         private static void DropDatabase()
         {
             JObject o1 = JObject.Parse(File.ReadAllText(@"dbconfig.json"));
-            string hostname = (string)o1["hostname"];
-            int port = (int)o1["port"];
-            string authKey = (string)o1["authKey"];
-            string database = (string)o1["database"];
-            string collection = (string)o1["collection"];
+            string hostname = (string) o1["hostname"];
+            int port = (int) o1["port"];
+            string authKey = (string) o1["authKey"];
+            string database = (string) o1["database"];
+            string collection = (string) o1["collection"];
 
             var gremlinServer = new GremlinServer(hostname, port, enableSsl: true, username: "/dbs/" + database + "/colls/" + collection, password: authKey);
             using (var gremlinClient = new GremlinClient(gremlinServer, new GraphSON2Reader(), new GraphSON2Writer(), GremlinClient.GraphSON2MimeType))

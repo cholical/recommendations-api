@@ -260,4 +260,5 @@ paket-files/
 __pycache__/
 *.pyc
 
-recommendations-api/*.json
+recommendations-api/dbconfig.json
+recommendations-api/salt.json
