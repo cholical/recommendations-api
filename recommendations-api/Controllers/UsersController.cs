@@ -74,6 +74,7 @@ namespace recommendations_api.Controllers
                 }
             }
         }
+
         [Route("api/signout")]
         [HttpPost]
         public IActionResult SignOut([FromBody] dynamic value)

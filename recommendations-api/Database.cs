@@ -1,4 +1,5 @@
 ﻿using Gremlin.Net.Driver;
+using Microsoft.Azure.Documents.Client;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -17,16 +18,21 @@ namespace recommendations_api
         private string authKey;
         private string database;
         private string collection;
+        private string URIEndpoint;
         private GremlinServer gremlinServer;
+        private DocumentClient documentClient;
+
         public Database()
         {
             JObject o1 = JObject.Parse(File.ReadAllText(@"dbconfig.json"));
-            this.hostname = (string)o1["hostname"];
-            this.port = (int)o1["port"];
-            this.authKey = (string)o1["authKey"];
-            this.database = (string)o1["database"];
-            this.collection = (string)o1["collection"];
+            this.hostname = (string) o1["hostname"];
+            this.port = (int) o1["port"];
+            this.authKey = (string) o1["authKey"];
+            this.database = (string) o1["database"];
+            this.collection = (string) o1["collection"];
+            this.URIEndpoint = (string) o1["URIEndpoint"];
             this.gremlinServer = new GremlinServer(hostname, port, enableSsl: true, username: "/dbs/" + database + "/colls/" + collection, password: authKey);
+            this.documentClient = new DocumentClient(new Uri(URIEndpoint), authKey);
         }
 
         public static Database Instance
@@ -66,6 +72,11 @@ namespace recommendations_api
         public GremlinServer GetGremlinServer()
         {
             return gremlinServer; 
+        }
+
+        public DocumentClient GetDocumentClient()
+        {
+            return documentClient;
         }
     }
 }

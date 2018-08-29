@@ -1,4 +1,5 @@
 ﻿using Gremlin.Net.Driver;
+using Microsoft.Azure.Documents.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace recommendations_api
         string GetDatabase();
         string GetCollection();
         GremlinServer GetGremlinServer();
+        DocumentClient GetDocumentClient();
     }
 }
