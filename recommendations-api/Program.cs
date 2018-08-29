@@ -93,7 +93,7 @@ namespace recommendations_api
                     line = csvReader.ReadLine();
                     var values = line.Split('|');
                     values[1] = values[1].Replace("'", @"\'");
-                    Debug.WriteLine($"Value[1]: {values[1]} | Value[2]: {values[2]} | Value[3]: {values[3]}");
+                    //Debug.WriteLine($"Value[1]: {values[1]} | Value[2]: {values[2]} | Value[3]: {values[3]}");
                     //.addE('inDepartment').to(g.V().hasLabel('department').has('name', '{values[2]}'))
                     //.addE('inAisle').to(g.V().hasLabel('aisle').has('name', '{values[3]}'))
                     var task = gremlinClient.SubmitAsync<dynamic>($"g.addV('product').property('name', '{values[1]}').addE('inDepartment').to(g.V().hasLabel('department').has('name', '{values[2]}'));");

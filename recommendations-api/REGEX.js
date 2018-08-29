@@ -1,0 +1,1 @@
+function userDefinedFunction(input, pattern) { return input.toLowerCase().match(pattern.toLowerCase()) !== null; };

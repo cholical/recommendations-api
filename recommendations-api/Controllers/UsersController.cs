@@ -45,7 +45,7 @@ namespace recommendations_api.Controllers
                 task = gremlinClient.SubmitAsync<dynamic>(query);
                 task.Wait(); 
             }
-            return Json(new { accessToken = accessToken });
+            return Json(new { accessToken = accessToken, firstName = firstName, lastName = lastName });
         }
 
         [Route("api/signin")]
