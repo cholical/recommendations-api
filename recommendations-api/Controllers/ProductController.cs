@@ -173,9 +173,14 @@ namespace recommendations_api.Controllers
                 }
             }
 
-            //Todo get recommendations
-            
-            return Json(new { product = product });
+            //Generate recommendations
+            using (gremlinClient)
+            {
+                string query = $"g.V('{value.productId}').bothE('affinity').order().by('weight', decr).otherV().dedup();";
+                var subTask = gremlinClient.SubmitAsync<dynamic>(query);
+                subTask.Wait();
+                return Json(new { product = product, recommendations = subTask.Result });
+            }
         }
 
         [Route("api/buy")]
@@ -310,7 +315,7 @@ namespace recommendations_api.Controllers
                     }
                 }
             }
-            return Json(new { });
+            return StatusCode(200);
         }
     }
 }
