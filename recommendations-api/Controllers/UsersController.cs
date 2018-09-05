@@ -39,7 +39,7 @@ namespace recommendations_api.Controllers
                 task.Wait();
                 if (task.Result.Count != 0)
                 {
-                    return StatusCode(403);
+                    return Json(new { repeatUsername = true});
                 }
                 query = $"g.addV('user').property('firstName', '{firstName}').property('lastName', '{lastName}').property('username', '{username}').property('password', '{password}').property('accessToken', '{accessToken}');";
                 task = gremlinClient.SubmitAsync<dynamic>(query);
@@ -48,9 +48,9 @@ namespace recommendations_api.Controllers
             return Json(new { accessToken = accessToken, firstName = firstName, lastName = lastName });
         }
 
-        [Route("api/signin")]
+        [Route("api/login")]
         [HttpPost]
-        public IActionResult SignIn([FromBody] dynamic value)
+        public IActionResult Login([FromBody] dynamic value)
         {
             string username = ((string)value.username).Replace("'", @"\'");
             string password = HashPassword(((string)value.password).Replace("'", @"\'"));
@@ -62,11 +62,11 @@ namespace recommendations_api.Controllers
                 task.Wait();
                 if (task.Result.Count == 1)
                 {
-                    return Json(new { accessToken = accessToken });
+                    return Json(new { accessToken = accessToken, user = task.Result.ElementAt(0) });
                 }
                 else if (task.Result.Count == 0)
                 {
-                    return StatusCode(401);
+                    return Json(new { incorrectCredentials = true });
                 }
                 else
                 {
@@ -75,11 +75,11 @@ namespace recommendations_api.Controllers
             }
         }
 
-        [Route("api/signout")]
+        [Route("api/logout")]
         [HttpPost]
-        public IActionResult SignOut([FromBody] dynamic value)
+        public IActionResult Logout([FromBody] dynamic value)
         {
-            string accessToken = Guid.NewGuid().ToString();
+            string accessToken = value.accessToken;
             string query = $"g.V().hasLabel('user').has('accessToken', {accessToken}).property('accessToken', '');";
             return StatusCode(200);
         }

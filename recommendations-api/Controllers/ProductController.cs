@@ -176,7 +176,7 @@ namespace recommendations_api.Controllers
             //Generate recommendations
             using (gremlinClient)
             {
-                string query = $"g.V('{value.productId}').bothE('affinity').order().by('weight', decr).otherV().dedup();";
+                string query = $"g.V('{value.productId}').bothE('affinity').order().by('weight', decr).otherV().dedup().limit(8);";
                 var subTask = gremlinClient.SubmitAsync<dynamic>(query);
                 subTask.Wait();
                 return Json(new { product = product, recommendations = subTask.Result });
